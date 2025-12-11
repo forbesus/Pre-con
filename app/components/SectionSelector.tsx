@@ -39,21 +39,21 @@ export default function SectionSelector({ sections, onSectionsSelected, onAddToP
   const selectionCount = selected.size;
 
   return (
-    <div>
-      <h2 className="text-2xl font-semibold mb-6 text-center">Choose your sections 👇</h2>
+    <div className="w-full max-w-6xl mx-auto align-center justify-center flex flex-col items-center">
+      <h2 className="text-5xl font-bold mb-12 text-center text-white">Choose your sections 👇</h2>
       
-      <div className="bg-[#1a1a1a] rounded-lg p-6 mb-4">
-        <ul className="space-y-3">
+      <div className="bg-[#1a1a1a] rounded-lg p-10 mb-6 align-center justify-center w-full max-w-2xl mx-auto">
+        <ul className="space-y-4">
           {sections.map((section, index) => (
-            <li key={index} className="flex items-center space-x-3">
+            <li key={index} className="flex items-center space-x-4">
               {selected.has(index) ? (
-                <div className="w-4 h-4 rounded bg-[#ff6b35] flex-shrink-0"></div>
+                <div className="w-5 h-5 rounded bg-[#ff6b35] flex-shrink-0"></div>
               ) : (
-                <div className="w-4 h-4 rounded border-2 border-[#3a3a3a] flex-shrink-0"></div>
+                <div className="w-5 h-5 rounded border-2 border-[#3a3a3a] flex-shrink-0"></div>
               )}
               <button
                 onClick={() => toggleSection(index)}
-                className={`text-left flex-1 transition-colors ${
+                className={`text-left flex-1 transition-colors text-base ${
                   selected.has(index)
                     ? 'text-[#ff6b35]'
                     : 'text-white hover:text-[#ff6b35]'
@@ -67,7 +67,7 @@ export default function SectionSelector({ sections, onSectionsSelected, onAddToP
         </ul>
         
         {hasSelection && (
-          <p className="text-[#b0b0b0] text-sm mt-4">
+          <p className="text-[#b0b0b0] text-base mt-6">
             {selectionCount} {selectionCount === 1 ? 'section' : 'sections'} selected
           </p>
         )}
@@ -76,10 +76,10 @@ export default function SectionSelector({ sections, onSectionsSelected, onAddToP
       <button
         onClick={onAddToProject}
         disabled={!hasSelection}
-        className={`w-full py-3 px-6 rounded-lg transition-colors uppercase font-semibold ${
+        className={`w-full max-w-2xl mx-auto align-center justify-center py-4 px-8 rounded-lg transition-colors uppercase font-bold text-lg ${
           hasSelection
             ? 'bg-[#ff6b35] text-white hover:bg-[#ff8555]'
-            : 'bg-[#3a3a3a] text-[#666] cursor-not-allowed'
+            : 'bg-[#3a3a3a] text-[#666] cursor-not-allowed border border-[#4a4a4a] disabled:opacity-50'
         }`}
       >
         {hasSelection ? 'Create Summary' : 'Add to project'}

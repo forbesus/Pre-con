@@ -76,14 +76,14 @@ export default function PDFUploader({ onPDFProcessed, onProcessing }: PDFUploade
   };
 
   return (
-    <div >
-      <h2 className="text-4xl font-semibold mb-6 text-center">The Pre-Con Intelligence Platform</h2>
+    <div className="w-full max-w-6xl mx-auto align-center justify-center flex flex-col items-center">
+      <h2 className="text-5xl font-bold mb-12 text-center text-white">The Pre-Con Intelligence Platform</h2>
       
-      <div className="bg-[#1a1a1a] rounded-lg p-8 text-center mb-4">
-        <p className="text-white mb-6">Upload your spec doc 👇</p>
+      <div className="bg-[#1a1a1a] rounded-lg p-10 text-center mb-6 align-center justify-center">
+        <p className="text-white text-lg mb-8">Upload your spec doc 👇</p>
         
         <div
-          className={`border-2 border-dashed rounded-lg p-12 cursor-pointer transition-colors ${
+          className={`w-full max-w-2xl mx-auto border-2 border-dashed rounded-lg p-16 cursor-pointer transition-colors ${
             isDragging
               ? 'border-[#ff6b35] bg-[#2a2a2a]'
               : 'border-[#3a3a3a] hover:border-[#4a4a4a]'
@@ -95,7 +95,7 @@ export default function PDFUploader({ onPDFProcessed, onProcessing }: PDFUploade
         >
           <div className="flex flex-col items-center justify-center">
             <svg 
-              className="w-16 h-16 text-[#b0b0b0] mb-4" 
+              className="w-20 h-20 text-[#b0b0b0] mb-6" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -107,7 +107,7 @@ export default function PDFUploader({ onPDFProcessed, onProcessing }: PDFUploade
                 d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" 
               />
             </svg>
-            <p className="text-[#b0b0b0] text-sm">Drag & drop or click</p>
+            <p className="text-[#b0b0b0] text-base">Drag & drop or click</p>
           </div>
         </div>
       </div>
@@ -125,7 +125,7 @@ export default function PDFUploader({ onPDFProcessed, onProcessing }: PDFUploade
         <button
           onClick={processFile}
           disabled={isProcessing}
-          className="w-full py-3 px-6 rounded-lg bg-[#ff6b35] text-white hover:bg-[#ff8555] transition-colors uppercase font-semibold disabled:opacity-50"
+          className="w-full py-4 px-8 max-w-2xl mx-auto align-center justify-center rounded-lg bg-[#3a3a3a] border border-[#4a4a4a] text-white hover:bg-[#4a4a4a] transition-colors uppercase font-bold text-lg disabled:opacity-50"
         >
           {isProcessing ? 'Analyzing...' : 'Analyze Document'}
         </button>
@@ -134,7 +134,7 @@ export default function PDFUploader({ onPDFProcessed, onProcessing }: PDFUploade
       {!file && (
         <button
           onClick={handleClick}
-          className="w-full py-3 px-6 rounded-lg bg-[#3a3a3a] text-white hover:bg-[#4a4a4a] transition-colors uppercase font-semibold"
+          className="w-full max-w-2xl mx-auto align-center justify-center py-4 px-8 rounded-lg bg-[#3a3a3a] border border-[#4a4a4a] text-white hover:bg-[#4a4a4a] transition-colors uppercase font-bold text-lg"
         >
           Upload a file
         </button>
