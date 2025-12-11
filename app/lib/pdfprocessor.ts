@@ -1,9 +1,13 @@
 // app/lib/pdfProcessor.ts
 import * as pdfjsLib from 'pdfjs-dist';
 
-// Configure PDF.js worker - use local worker file from public directory
+// Configure PDF.js worker
+// Initialize worker source at module load time
 if (typeof window !== 'undefined') {
-  pdfjsLib.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.mjs';
+  // Use unpkg CDN which is more reliable for PDF.js workers
+  const pdfjsVersion = pdfjsLib.version || '5.4.449';
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 
+    `https://unpkg.com/pdfjs-dist@${pdfjsVersion}/build/pdf.worker.min.mjs`;
 }
 
 // Keyword to search for (matching Python script)

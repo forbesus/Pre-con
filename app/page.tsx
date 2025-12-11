@@ -88,8 +88,8 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#1a1a1a] p-8">
-      <div className="max-w-4xl mx-auto space-y-8">
+    <div className="min-h-screen w-full bg-[#1a1a1a] p-8">
+      <div className="max-w-6xl mx-auto space-y-12">
         {currentStep === 'upload' && (
           <PDFUploader 
             onPDFProcessed={handlePDFProcessed}
@@ -98,8 +98,8 @@ export default function Home() {
         )}
 
         {isProcessing && (
-          <div className="bg-[#2a2a2a] rounded-lg p-8 text-center">
-            <p className="text-white">Processing PDF...</p>
+          <div className="bg-[#1a1a1a] rounded-lg p-10 text-center mb-6 align-center justify-center w-full max-w-2xl mx-auto">
+            <p className="text-white text-lg">Processing PDF...</p>
           </div>
         )}
 
@@ -112,8 +112,8 @@ export default function Home() {
         )}
 
         {isExtracting && (
-          <div className="bg-[#2a2a2a] rounded-lg p-8 text-center">
-            <p className="text-white">Extracting materials...</p>
+          <div className="bg-[#1a1a1a] rounded-lg p-10 text-center mb-6 align-center justify-center w-full max-w-2xl mx-auto">
+            <p className="text-white text-lg">Extracting materials...</p>
           </div>
         )}
 
