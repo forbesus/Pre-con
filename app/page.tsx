@@ -13,7 +13,10 @@ interface Section {
   pages: number[];
 }
 
+type Step = 'upload' | 'sections' | 'summary';
+
 export default function Home() {
+  const [currentStep, setCurrentStep] = useState<Step>('upload');
   const [sections, setSections] = useState<Section[]>([]);
   const [selectedSections, setSelectedSections] = useState<Section[]>([]);
   const [materialsResults, setMaterialsResults] = useState<Array<{
@@ -27,9 +30,10 @@ export default function Home() {
     setSections(data.sections);
     setSelectedSections([]);
     setMaterialsResults([]);
+    setCurrentStep('sections');
   };
 
-  const handleExtractMaterials = async () => {
+  const handleAddToProject = async () => {
     if (selectedSections.length === 0) {
       alert('Please select at least one section');
       return;
@@ -39,19 +43,21 @@ export default function Home() {
     const results = [];
 
     try {
-      // For each selected section, extract text and send to API
-      // Note: You'll need to extract text from PDF pages for each section
-      // This is a simplified version - you'll need to pass the actual text
+      const { extractTextFromPages } = await import('./lib/pdfprocessor');
       
       for (const section of selectedSections) {
-        // TODO: Extract actual text from PDF pages for this section
-        const sectionText = `[Section ${section.startPage}-${section.endPage} text would go here]`;
+        // Extract actual text from PDF pages for this section
+        const sectionText = await extractTextFromPages(section.pages);
         
         const response = await fetch('/api/extract-materials', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ sectionText }),
         });
+
+        if (!response.ok) {
+          throw new Error('Failed to extract materials');
+        }
 
         const data = await response.json();
         results.push({
@@ -61,6 +67,7 @@ export default function Home() {
       }
 
       setMaterialsResults(results);
+      setCurrentStep('summary');
     } catch (error) {
       console.error('Error extracting materials:', error);
       alert('Error extracting materials. Please try again.');
@@ -69,39 +76,52 @@ export default function Home() {
     }
   };
 
+  const handleBack = () => {
+    if (currentStep === 'summary') {
+      setCurrentStep('sections');
+      setMaterialsResults([]);
+    } else if (currentStep === 'sections') {
+      setCurrentStep('upload');
+      setSections([]);
+      setSelectedSections([]);
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-zinc-50 p-8">
+    <div className="min-h-screen bg-[#1a1a1a] p-8">
       <div className="max-w-4xl mx-auto space-y-8">
-        <h1 className="text-3xl font-bold">Construction Spec Processor</h1>
-        
-        <PDFUploader 
-          onPDFProcessed={handlePDFProcessed}
-          onProcessing={setIsProcessing}
-        />
-
-        {isProcessing && <p>Processing PDF...</p>}
-
-        {sections.length > 0 && (
-          <>
-            <SectionSelector
-              sections={sections}
-              onSectionsSelected={setSelectedSections}
-            />
-            
-            {selectedSections.length > 0 && (
-              <button
-                onClick={handleExtractMaterials}
-                disabled={isExtracting}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-              >
-                {isExtracting ? 'Extracting...' : 'Extract Materials'}
-              </button>
-            )}
-          </>
+        {currentStep === 'upload' && (
+          <PDFUploader 
+            onPDFProcessed={handlePDFProcessed}
+            onProcessing={setIsProcessing}
+          />
         )}
 
-        {materialsResults.length > 0 && (
-          <MaterialsDisplay results={materialsResults} />
+        {isProcessing && (
+          <div className="bg-[#2a2a2a] rounded-lg p-8 text-center">
+            <p className="text-white">Processing PDF...</p>
+          </div>
+        )}
+
+        {currentStep === 'sections' && sections.length > 0 && (
+          <SectionSelector
+            sections={sections}
+            onSectionsSelected={setSelectedSections}
+            onAddToProject={handleAddToProject}
+          />
+        )}
+
+        {isExtracting && (
+          <div className="bg-[#2a2a2a] rounded-lg p-8 text-center">
+            <p className="text-white">Extracting materials...</p>
+          </div>
+        )}
+
+        {currentStep === 'summary' && materialsResults.length > 0 && (
+          <MaterialsDisplay 
+            results={materialsResults}
+            onBack={handleBack}
+          />
         )}
       </div>
     </div>

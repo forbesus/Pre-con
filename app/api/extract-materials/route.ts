@@ -6,12 +6,29 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY || '',
 });
 
-// Placeholder prompt - replace with your actual prompt tomorrow
-const EXTRACTION_PROMPT = `Extract and summarize all materials mentioned in the following construction specification section. 
-List each material with its specifications, quantities if mentioned, and any relevant details.
+const EXTRACTION_PROMPT = `I will upload a construction specification PDF. I want you to extract ONLY the materials required and all applicable technical standards (ASTM, ANSI, ACI, etc.). Then produce a clean, extremely accurate pre-construction summary with the following structure:
+
+1. Project Header
+   – Developer or owner name
+   – Project name
+   – Project address
+
+2. Quick Summary (Bid Assessment)
+   – Standard requirements
+   – Premium or unusual requirements that will affect cost, complexity, or schedule
+
+3. Full Detailed Breakdown
+   – Organize by categories (CMU, mortar, grout, reinforcement, ties/anchors, flashing, drainage, accessories, etc.)
+   – List required materials
+   – List required standards
+   – Call out anything that is not typical or will increase cost
+
+This summary should be extremely accurate, easy to read quickly, and formatted so a construction estimator or subcontractor can instantly understand the scope and decide whether to bid.
 
 Section text:
-{sectionText}`;
+{sectionText}
+
+After you finish, tell me: "Ready to convert to UI components whenever you are."`;
 
 export async function POST(request: NextRequest) {
   try {
